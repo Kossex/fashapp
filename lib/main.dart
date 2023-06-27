@@ -1,3 +1,5 @@
+import 'package:app/pages/auth_page.dart';
+import 'package:app/pages/chat_page.dart';
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,20 +7,34 @@ import 'package:flutter/material.dart';
 import 'package:app/components/horizontal_listview.dart';
 import 'package:app/components/Products.dart';
 import 'package:app/pages/login.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Login(),
+    home: Auth_Page(),
   ));
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+
+void signOut(BuildContext context) async {
+  await googleSignIn.disconnect();
+  await _auth.signOut();
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const Login()),
+  );
+}
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -31,12 +47,12 @@ class _HomePageState extends State<HomePage> {
       width: 350.0,
       child: Carousel(
         images: [
-          AssetImage("images/c1.jpg"),
-          AssetImage("images/m1.jpg"),
-          AssetImage("images/m2.jpg"),
-          AssetImage("images/w1.jpg"),
-          AssetImage("images/w3.jpg"),
-          AssetImage("images/w4.jpg"),
+          const AssetImage("images/c1.jpg"),
+          const AssetImage("images/m1.jpg"),
+          const AssetImage("images/m2.jpg"),
+          const AssetImage("images/w1.jpg"),
+          const AssetImage("images/w3.jpg"),
+          const AssetImage("images/w4.jpg"),
         ],
         dotSize: 4.0,
         dotSpacing: 15.0,
@@ -50,18 +66,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 0.1,
         backgroundColor: Colors.red,
-        title: Text('Fashapp'),
+        title: const Text('Fashapp'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               color: Colors.white,
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.shopping_cart, color: Colors.white),
+            icon: const Icon(Icons.shopping_cart, color: Colors.white),
           ),
         ],
       ),
@@ -69,66 +85,73 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(''),
-              accountEmail: Text('131313'),
+              accountName: Text(_auth.currentUser?.displayName ?? ''),
+              accountEmail: Text(_auth.currentUser?.email ?? ''),
               currentAccountPicture: GestureDetector(
-                child: CircleAvatar(
+                child: const CircleAvatar(
                     backgroundColor: Colors.grey,
                     child: Icon(
                       Icons.person,
                       color: Colors.white,
                     )),
               ),
-              decoration: BoxDecoration(color: Colors.red),
+              decoration: const BoxDecoration(color: Colors.red),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('Home Page'),
                 leading: Icon(Icons.home),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('My Account'),
                 leading: Icon(Icons.person_2),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('My orders'),
                 leading: Icon(Icons.shopping_bag),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
-                title: Text('Cattegories'),
+              child: const ListTile(
+                title: Text('Categories'),
                 leading: Icon(Icons.dashboard),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('Favorites'),
                 leading: Icon(Icons.favorite),
               ),
             ),
-            Divider(),
+            const Divider(),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('Settings'),
                 leading: Icon(Icons.settings),
               ),
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Text('About'),
                 leading: Icon(Icons.help),
+              ),
+            ),
+            InkWell(
+              onTap: () => signOut(context),
+              child: const ListTile(
+                title: Text("Log out"),
+                leading: Icon(Icons.logout),
               ),
             )
           ],
@@ -138,15 +161,15 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             imageCarousel,
-            new Padding(
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
                 'Categories',
                 style: TextStyle(color: Colors.grey),
               ),
             ),
-            HorizontalList(),
-            new Padding(
+            const HorizontalList(),
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
                 'Recent products',
@@ -155,10 +178,22 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               height: 360,
-              child: Products(),
+              child: const Products(),
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(),
+            ),
+          );
+        },
+        backgroundColor: Colors.pink,
+        child: const Icon(Icons.chat),
       ),
     );
   }

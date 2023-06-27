@@ -42,6 +42,8 @@ dependencies:
   shared_preferences: ^2.1.2
   fluttertoast: ^8.2.2
   carousel_nullsafety: ^0.1.1
+  provider: ^6.0.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +93,8 @@ flutter:
     - images/products/shoe1.jpg
     - images/products/skt1.jpg
     - images/products/skt2.jpg
+    - images/google.png
+    - images/google1.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
