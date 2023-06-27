@@ -8,7 +8,6 @@ import 'package:app/components/horizontal_listview.dart';
 import 'package:app/components/Products.dart';
 import 'package:app/pages/login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

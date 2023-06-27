@@ -45,7 +45,9 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Chat'),
+        backgroundColor: Colors.pink,
       ),
       body: Column(
         children: [
@@ -61,9 +63,11 @@ class _ChatPageState extends State<ChatPage> {
                     itemCount: messages?.length,
                     itemBuilder: (context, index) {
                       final message = messages?[index]['message'];
-                      final timestamp = messages?[index]['timestamp'];
-                      final formattedTime =
-                          DateFormat.Hm().format(timestamp.toDate());
+                      final timestamp = messages?[index].get('timestamp');
+                      final formattedTime = timestamp != null
+                          ? DateFormat.Hm().format(timestamp.toDate())
+                          : '';
+
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
@@ -71,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Colors.pink,
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               padding: EdgeInsets.all(10.0),
@@ -116,7 +120,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                 ),
-                IconButton(
+                FloatingActionButton(
                   onPressed: () {
                     String message = _messageController.text.trim();
                     if (message.isNotEmpty) {
@@ -130,7 +134,11 @@ class _ChatPageState extends State<ChatPage> {
                       );
                     }
                   },
-                  icon: Icon(Icons.send),
+                  child: Icon(Icons.send),
+                  elevation: 1.0,
+                  shape: CircleBorder(),
+                  mini: true,
+                  backgroundColor: Colors.pink,
                 ),
               ],
             ),
