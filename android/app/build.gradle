@@ -61,6 +61,11 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    signingConfigs {
+        debug {
+            v1SigningEnabled false
+        }
+    }
 }
 
 flutter {
